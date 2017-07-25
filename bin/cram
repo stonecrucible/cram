@@ -24,12 +24,13 @@ else
 fi
 
 
-vocabulary=("install" "remove" "list" "create" "update" "help" "vocabulary" "edit");
+vocabulary=("install" "remove" "list" "create" "update" "help" "edit" "register");
 
-if [[ ! "${vocabulary[*]}"  =~ "$cmd"  ]]; then 
+if [[ ! "${vocabulary[*]}"  =~ "$cmd" ]] && [[ "$cmd" != "vocabulary" ]]; then 
     xecho "unknown command \"$cmd\". exiting ..."
     exit 2
 fi
+
 
 if [ "$(id -u)" != "0"  ];then xecho "requires root uid. exiting ..."; exit 1; fi ;
 
@@ -58,6 +59,9 @@ case "$cmd" in
 
         ;;
     "create")
+
+        ;;
+    "register")
 
         ;;
 
