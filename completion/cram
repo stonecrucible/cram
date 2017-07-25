@@ -1,0 +1,14 @@
+_cram()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="--help --verbose --version"
+    words=("$(cram vocabulary)")
+    if [ ! "$prev" = "cram" ];then words=("$(cram vocabulary $prev)"); fi
+    
+    COMPREPLY=( $( compgen -W "${words}" -- ${cur}  ) );
+    return 0;
+
+} && complete -F _cram cram

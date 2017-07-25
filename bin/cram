@@ -1,0 +1,85 @@
+#!/bin/bash
+#set ifs to prevent errors
+IFS=$' \t\n'
+#set PATH to prevent errors
+PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+#strict bash mode
+set -euo pipefail
+#trapped cleanup function to remove strict bash mode after exit
+function cleanup () { set +euo pipefail; }
+trap cleanup EXIT;
+
+#ware= program name
+ware=$(basename $0)
+
+#a replacement for echo that 
+function xecho () { echo "$ware" : "$@"; }
+
+#check if a command is provided, else command is help
+if [ $# -gt 0 ];then
+    cmd="$1";
+    shift;
+else
+    cmd="help";
+fi
+
+
+vocabulary=("install" "remove" "list" "create" "update" "help" "vocabulary" "edit");
+
+if [[ ! "${vocabulary[*]}"  =~ "$cmd"  ]]; then 
+    xecho "unknown command \"$cmd\". exiting ..."
+    exit 2
+fi
+
+if [ "$(id -u)" != "0"  ];then xecho "requires root uid. exiting ..."; exit 1; fi ;
+
+
+unset vocabulary_root;
+
+case "$cmd" in
+    "install") 
+
+        ;;
+
+    "remove") 
+
+        ;;
+
+    "list")
+        if [ "$#" -gt 0 ];
+        then
+            case "$1" in
+                "installed") ;;
+                "dependecies") ;;
+                "all") ;;
+                *) xecho "unkown command \"$cmd::$1\""; exit 10000 ;;
+            esac
+        fi;
+
+        ;;
+    "create")
+
+        ;;
+
+    "update") 
+        
+        ;;
+    "help") 
+
+        ;;
+
+    "vocabulary")
+        if [ "$#" -eq 0 ]; then echo "${vocabulary[*]}";
+        else
+            if [[ ! "${vocabulary[*]}" =~ "$1"  ]]; then exit 3; fi
+
+            if [ "$1" = "list" ]; then echo "installed all"; fi
+
+        fi
+        ;;
+    "edit") vim "$0";
+
+        ;;
+esac
+
+exit 0;
